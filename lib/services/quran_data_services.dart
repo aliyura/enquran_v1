@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:queries/queries.dart';
-import 'package:enquran/main.dart';
+import 'package:enquran/screens/app.dart';
 import 'package:enquran/models/bookmarks_model.dart';
 import 'package:enquran/models/chapters_models.dart';
 import 'package:enquran/models/juz_model.dart';

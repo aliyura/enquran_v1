@@ -3,7 +3,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:enquran/helpers/colors_settings.dart';
 import 'package:enquran/helpers/shimmer_helpers.dart';
 import 'package:enquran/localizations/app_localizations.dart';
-import 'package:enquran/main.dart';
+import 'package:enquran/screens/app.dart';
 import 'package:enquran/models/bookmarks_model.dart';
 import 'package:enquran/services/bookmarks_data_service.dart';
 import 'package:scoped_model/scoped_model.dart';

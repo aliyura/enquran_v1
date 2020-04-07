@@ -9,7 +9,7 @@ import 'package:enquran/helpers/colors_settings.dart';
 import 'package:enquran/helpers/my_event_bus.dart';
 import 'package:enquran/helpers/settings_helpers.dart';
 import 'package:enquran/helpers/shimmer_helpers.dart';
-import 'package:enquran/main.dart';
+import 'package:enquran/screens/app.dart';
 import 'package:enquran/models/bookmarks_model.dart';
 import 'package:enquran/models/chapters_models.dart';
 import 'package:enquran/models/quran_data_model.dart';
@@ -20,6 +20,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:after_layout/after_layout.dart';
 import 'package:quiver/strings.dart';
 import 'package:share/share.dart';
+import 'package:toast/toast.dart';
 import 'package:tuple/tuple.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
@@ -74,7 +75,7 @@ class _QuranAyaScreenState extends State<QuranAyaScreen>
       model: quranAyaScreenScopedModel,
       child: Scaffold(
         appBar: AppBar(
-          title: InkWell(
+          title: GestureDetector(
             child: Container(
               alignment: Alignment.centerLeft,
               child: ScopedModelDescendant<QuranAyaScreenScopedModel>(
@@ -385,7 +386,8 @@ class AyaItemCellState extends State<AyaItemCell> {
   Aya aya = Aya();
   List<Tuple2<TranslationDataKey, TranslationAya>> listTranslationsAya = [];
   QuranAyaScreenScopedModel model;
-  FlutterTts flutterTts; 
+  FlutterTts flutterTts;
+  Chapter chapter;
 
   MyEventBus _myEventBus = MyEventBus.instance;
 
@@ -406,6 +408,7 @@ class AyaItemCellState extends State<AyaItemCell> {
       aya = widget.aya;
       listTranslationsAya = widget.listTranslationsAya;
       model = widget.model;
+      chapter = model.currentChapter;
     });
     streamEvent = _myEventBus.eventBus.on<FontSizeEvent>().listen((onData) {
       if (streamEvent != null) {
@@ -427,16 +430,31 @@ class AyaItemCellState extends State<AyaItemCell> {
     super.dispose();
   }
 
-void inializeSpeaker() async{
+  void inializeSpeaker() async {
     flutterTts = FlutterTts();
     await flutterTts.setLanguage("hi-IN");
-    await flutterTts.setSpeechRate(0.4);
-    await flutterTts.setVolume(1);
-    await flutterTts.setPitch(1.1);
-}
+    await flutterTts.setSpeechRate(0.5);
+    await flutterTts.setVolume(1.1);
+    await flutterTts.setPitch(0.1);
+  }
+
+  void _shareWithFriend(String translation) {
+    String body = translation == null
+        ? "\"" +
+            aya.text +
+            "\"\n\nHoly Quran  [${chapter.nameSimple} ${chapter.chapterNumber}:${aya.aya}]"
+        : "\"" +
+            translation +
+            "\"\n\nHoly Quran [${chapter.nameSimple} ${chapter.chapterNumber}:${aya.aya}]";
+    Share.share(body +
+        "\n\nQuoted from en Quran v1.0.0, download yours via https://play.google.com/store/apps/details?id=com.rabsdeveloper.enquran");
+  }
+
   void _playVerse(String verse) async {
-    var result = await flutterTts.speak(verse);
-    print(result);
+    Toast.show("${chapter.nameSimple} ${chapter.chapterNumber}:${aya.aya}", context,duration: Toast.LENGTH_LONG);
+
+   await flutterTts.speak(verse);
+  
   }
 
   @override
@@ -449,10 +467,20 @@ void inializeSpeaker() async{
     for (var translationAya in listTranslationsAya) {
       listTranslationWidget
           .add(AppTheme.language == "English" || AppTheme.language == "Both"
-              ? InkWell(
+              ? GestureDetector(
+                  onLongPress: () {
+                    String translation =
+                        translationAya.item2.text?.replaceAll('Allah', 'God');
+                    _shareWithFriend(translation);
+                  },
+                  onDoubleTap: () {
+                    String translation =
+                        translationAya.item2.text?.replaceAll('Allah', 'God');
+                    _playVerse(translation);
+                  },
                   onTap: () async {
                     await showDialogActionButtons(
-                        aya, model.currentChapter, translationAya.item2.text);
+                        aya, chapter, translationAya.item2.text);
                   },
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -478,7 +506,7 @@ void inializeSpeaker() async{
         Widget child,
         QuranAyaScreenScopedModel model,
       ) {
-        return InkWell(
+        return GestureDetector(
           onTap: () async {
             await showDialogActionButtons(aya, model.currentChapter, null);
           },
@@ -649,12 +677,11 @@ void inializeSpeaker() async{
                     ],
                   )),
               Divider(height: 10),
-             
               translation != null ? Divider() : SizedBox(),
               translation != null
                   ? FlatButton(
                       onPressed: () async {
-                        translation=translation?.replaceAll('Allah', 'God');
+                        translation = translation?.replaceAll('Allah', 'God');
                         _playVerse(translation);
                         Navigator.of(context).pop();
                       },
@@ -670,18 +697,9 @@ void inializeSpeaker() async{
                       ))
                   : SizedBox(),
               Divider(),
-               FlatButton(
+              FlatButton(
                   onPressed: () async {
-                    String body = translation == null
-                        ? "\"" +
-                            aya.text +
-                            "\"\n\nHoly Quran [${chapter.nameSimple} ${chapter.chapterNumber}:${aya.aya}]"
-                        : "\"" +
-                            translation +
-                            "\"\n\nHoly Quran [${chapter.translatedName.name} ${chapter.chapterNumber}:${aya.aya}]";
-
-                    Share.share(body +
-                        "\n\nQuoted from en Quran v1.0.0, download yours via https://play.google.com/store/apps/details?id=com.rabsdeveloper.enquran");
+                    _shareWithFriend(translation);
                     Navigator.of(context).pop();
                   },
                   child: Row(
@@ -694,7 +712,7 @@ void inializeSpeaker() async{
                       Text("Share this Verse")
                     ],
                   )),
-                  Divider(height: 10),
+              Divider(height: 10),
               FlatButton(
                   onPressed: () async {
                     Navigator.of(context).pop();
@@ -716,7 +734,6 @@ void inializeSpeaker() async{
     );
   }
 }
-
 
 class QuranAyaScreenScopedModel extends Model {
   QuranDataService _quranDataService = QuranDataService.instance;

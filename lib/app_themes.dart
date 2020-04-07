@@ -12,7 +12,6 @@ class AppTheme {
   }
 
   static String language = "Both";
-  static bool initialized = false;
   static Color background = Color(0xff323de9);
   static const Color nearlyWhite = Color(0xFFFAFAFA);
   static const Color white = Color(0xFFFFFFFF);
@@ -109,7 +108,6 @@ class AppTheme {
   static initilizeTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String color = prefs.getString('background');
-    String init = prefs.getString('init');
 
     if (color != null && color != '') {
       String valueString = color.split('(0x')[1].split(')')[0];
@@ -117,12 +115,7 @@ class AppTheme {
       Color currentColor = new Color(value);
       background = currentColor;
     }
-      if (init != null && init != '') {
-        initialized=true;
-      }else{
-        initialized=false;
-      }
-
+     
     initilizeLanguage(prefs);
   }
 

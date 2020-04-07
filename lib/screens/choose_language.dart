@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:enquran/app_themes.dart';
 import 'package:toast/toast.dart';
-import 'package:enquran/main.dart';
+import 'package:enquran/screens/app.dart';
 
 class ChooseLanguage extends StatefulWidget {
   @override
@@ -28,7 +28,6 @@ class _CountryState extends State<ChooseLanguage> {
     } else {
       bothColor = AppTheme.background;
     }
-    _onInit();
     super.initState();
   }
 
@@ -52,6 +51,7 @@ class _CountryState extends State<ChooseLanguage> {
   _onInit() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('init', 'yes');
+     Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
   }
 
   void alert(message) {
@@ -154,8 +154,6 @@ class _CountryState extends State<ChooseLanguage> {
           GestureDetector(
               onTap: () {
                 _onInit();
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => MyApp()));
               },
               child: Container(
                 width: 150,
