@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:enquran/app_themes.dart';
+import 'package:enquran/screens/choose_language.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:enquran/app_settings.dart';
@@ -15,6 +16,7 @@ import 'package:enquran/services/database_file_service.dart';
 import 'package:enquran/services/quran_data_services.dart';
 import 'package:enquran/services/translations_list_service.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:splashscreen/splashscreen.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:kiwi/kiwi.dart' as kiwi;
 
@@ -23,16 +25,27 @@ void main() => runApp(new App());
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    AppTheme.initilizeTheme();
+
     return MaterialApp(
       title: 'en Quran',
       debugShowCheckedModeBanner: false,
-        theme:  ThemeData(
-          pageTransitionsTheme: PageTransitionsTheme(builders: {
-            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-          }),
-        ),
+      theme: ThemeData(
+        pageTransitionsTheme: PageTransitionsTheme(builders: {
+          TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+        }),
+      ),
       color: AppTheme.background,
-      home: MyApp(),
+      home: SplashScreen(
+        image: Image.asset('assets/images/launcher.png'),
+        seconds: 5,
+        backgroundColor: AppTheme.background,
+        styleTextUnderTheLoader: new TextStyle(),
+        photoSize: 100.0,
+        loaderColor: Colors.white,
+        navigateAfterSeconds:
+            AppTheme.initialized == true ? MyApp() : ChooseLanguage(),
+      ),
     );
   }
 }
@@ -43,10 +56,19 @@ class MyApp extends StatefulWidget {
 }
 
 void registerDependencies() {
-  Application.container.registerSingleton<IBookmarksDataService, BookmarksDataService>((c) => BookmarksDataService());
-  Application.container.registerSingleton<ITranslationsListService, TranslationsListService>((c) => TranslationsListService(),);
-  Application.container.registerSingleton<IQuranDataService, QuranDataService>((c) => QuranDataService(),);
-  Application.container.registerSingleton<IDatabaseFileService, DatabaseFileService>( (c) => DatabaseFileService());
+  Application.container
+      .registerSingleton<IBookmarksDataService, BookmarksDataService>(
+          (c) => BookmarksDataService());
+  Application.container
+      .registerSingleton<ITranslationsListService, TranslationsListService>(
+    (c) => TranslationsListService(),
+  );
+  Application.container.registerSingleton<IQuranDataService, QuranDataService>(
+    (c) => QuranDataService(),
+  );
+  Application.container
+      .registerSingleton<IDatabaseFileService, DatabaseFileService>(
+          (c) => DatabaseFileService());
 }
 
 typedef void ChangeLocaleCallback(Locale locale);
@@ -89,6 +111,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    AppTheme.initilizeTheme();
     myAppModel = MyAppModel(
       locale: Locale(
         'en',
@@ -99,11 +122,9 @@ class _MyAppState extends State<MyApp> {
     Application.changeLocale = changeLocale;
 
     Application.changeThemeCallback = null;
-    Application.changeThemeCallback = changeTheme;
 
     var locale = SettingsHelpers.instance.getLocale();
     myAppModel.changeLocale(locale);
-    changeTheme(SettingsHelpers.instance.getTheme());
 
     registerDependencies();
     start();
@@ -142,15 +163,6 @@ class _MyAppState extends State<MyApp> {
     myAppModel.changeLocale(locale);
   }
 
-  void changeTheme(ThemeModel themeModel) {
-    if (themeModel.themeEnum == ThemeEnum.light) {
-      currentTheme = ThemeData.light();
-    } else if (themeModel.themeEnum == ThemeEnum.dark) {
-      currentTheme = ThemeData.dark();
-    }
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return ScopedModel<MyAppModel>(
@@ -171,7 +183,15 @@ class _MyAppState extends State<MyApp> {
               locale: model.locale,
               onGenerateTitle: (context) =>
                   AppLocalizations.of(context).appName,
-              theme: ThemeData.light().copyWith(primaryColor: AppTheme.background),
+              theme: new ThemeData(
+                primaryColor: AppTheme.background,
+                textTheme: Theme.of(context).textTheme.apply(
+                      displayColor: AppTheme.nearlyBlack,
+                    ),
+                pageTransitionsTheme: PageTransitionsTheme(builders: {
+                  TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+                }),
+              ),
               color: AppTheme.background,
               routes: Routes.routes,
             );

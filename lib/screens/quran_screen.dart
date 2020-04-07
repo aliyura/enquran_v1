@@ -34,6 +34,7 @@ class _QuranQuranScreenState extends State<QuranScreen>
 
   @override
   void initState() {
+    AppTheme.initilizeTheme();
     tabController = TabController(
       vsync: this,
       length: 2,
@@ -99,29 +100,30 @@ class _QuranQuranScreenState extends State<QuranScreen>
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(FontAwesomeIcons.book,size: 20),
+              Icon(FontAwesomeIcons.book, size: 20),
               SizedBox(width: 10),
               Text('Quran')
             ],
           ),
         ),
         Tab(
-           child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-               mainAxisAlignment: MainAxisAlignment.center,
-             children: <Widget>[
-              Icon(FontAwesomeIcons.solidBookmark,size: 20),
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+              Icon(FontAwesomeIcons.solidBookmark, size: 20),
               SizedBox(width: 10),
               Text('Bookmark')
-           ])
-        ),
+            ])),
       ],
       tabBarChildrens: () {
         return <Widget>[
           Container(
-            height: 50,
+            color: AppTheme.white,
+            height: 45,
             child: Container(
               child: Scaffold(
+                backgroundColor: AppTheme.white,
                 body: TabBar(
                   controller: quranListTabController,
                   indicatorSize: TabBarIndicatorSize.tab,
@@ -163,7 +165,7 @@ class _QuranQuranScreenState extends State<QuranScreen>
               pinned: true,
               floating: true,
               forceElevated: innerBoxIsScrolled,
-              elevation: 0,
+              backgroundColor: AppTheme.background,
               bottom: PreferredSize(
                 preferredSize: Size.fromHeight(sliverAppBarChildrenHeight),
                 child: Container(
@@ -181,16 +183,14 @@ class _QuranQuranScreenState extends State<QuranScreen>
             ),
           ];
         },
-        
         body: TabBarView(
           controller: tabController,
           children: <Widget>[
             loadedQuranListScreen == false
                 ? Container(
-                  child:QuranListScreen(
-                         currentTabIndex: quranListCurrentTabIndex,
-                    )
-                )
+                    child: QuranListScreen(
+                    currentTabIndex: quranListCurrentTabIndex,
+                  ))
                 : Container(),
             QuranBookmarksScreen(),
           ],

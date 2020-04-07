@@ -156,12 +156,13 @@ class _QuranNavigatorDialogState extends State<QuranNavigatorDialog> {
                             ),
                           ),
                         ),
+                        SizedBox(height: 10),
                         FlatButton(
                           onPressed: () {
                             Navigator.of(context).pop(model.selectedChapter.key);
                           },
                           child: Text(
-                            'To Sura',
+                            'Go to the Chapter',
                           ),
                         ),
                       ],
@@ -231,15 +232,7 @@ class _QuranNavigatorDialogState extends State<QuranNavigatorDialog> {
                             ),
                           ),
                         ),
-                        FlatButton(
-                          onPressed: () {},
-                          child: Center(
-                            child: Text(
-                              'To Aya',
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
+                  
                       ],
                     ),
                   ),

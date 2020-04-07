@@ -9,6 +9,7 @@ import 'package:enquran/services/bookmarks_data_service.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:enquran/app_themes.dart';
 
 class QuranBookmarksScreen extends StatefulWidget {
   @override
@@ -23,6 +24,7 @@ class _QuranBookmarksScreenState extends State<QuranBookmarksScreen> {
 
   @override
   void initState() {
+     AppTheme.initilizeTheme();
     super.initState();
 
     (() async {

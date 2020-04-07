@@ -35,17 +35,17 @@ class AppLocalizations {
 
   String get juzText {
     return Intl.message(
-      'Juz',
-      name: 'juzText',
-      desc: 'juzText',
+      'Unit',
+      name: 'UnitText',
+      desc: 'UnitText',
     );
   }
 
   String get suraText {
     return Intl.message(
       'Chpaters',
-      name: 'suraText',
-      desc: 'suraText',
+      name: 'ChpaterText',
+      desc: 'ChpaterText',
     );
   }
 

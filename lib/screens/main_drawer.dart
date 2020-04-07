@@ -1,3 +1,4 @@
+import 'package:enquran/screens/settings_secreen.dart';
 import 'package:flutter/material.dart';
 import 'package:enquran/dialogs/quran_navigator_dialog.dart';
 import 'package:enquran/helpers/settings_helpers.dart';
@@ -11,6 +12,7 @@ import 'package:enquran/screens/about.dart';
 import 'package:enquran/screens/feedback.dart';
 import 'package:enquran/screens/invite_friend.dart';
 import 'package:enquran/screens/rate_app.dart';
+import 'package:enquran/app_themes.dart';
 
 class MainDrawer extends StatefulWidget {
   @override
@@ -24,6 +26,7 @@ class _MainDrawerState extends State<MainDrawer> {
 
   @override
   void initState() {
+    AppTheme.initilizeTheme();
     mainDrawerModel = MainDrawerModel();
     (() async {
       await mainDrawerModel.getChaptersForNavigator();
@@ -40,6 +43,23 @@ class _MainDrawerState extends State<MainDrawer> {
       ),
       body: Column(
         children: <Widget>[
+          Container(
+            alignment: Alignment.bottomCenter,
+            child: UserAccountsDrawerHeader(
+              accountName: Text('en Quran v0.0.1'),
+              accountEmail: Text('info@enquran.com'),
+              currentAccountPicture: GestureDetector(
+                child: CircleAvatar(
+                  backgroundColor: AppTheme.nearlyBlack.withOpacity(0.7),
+                  child: Icon(
+                    Icons.person,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              decoration: BoxDecoration(color: AppTheme.background),
+            ),
+          ),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -47,6 +67,8 @@ class _MainDrawerState extends State<MainDrawer> {
                 children: <Widget>[
                   InkWell(
                     onTap: () async {
+                      if (Navigator.canPop(context)) Navigator.pop(context);
+
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -74,6 +96,9 @@ class _MainDrawerState extends State<MainDrawer> {
                       ) {
                         return ListTile(
                           onTap: () async {
+                            if (Navigator.canPop(context))
+                              Navigator.pop(context);
+
                             var dialog = QuranNavigatorDialog(
                               chapters: model.chapters,
                               currentChapter: model.chapters.keys.first,
@@ -109,6 +134,8 @@ class _MainDrawerState extends State<MainDrawer> {
                   ),
                   InkWell(
                     onTap: () async {
+                      if (Navigator.canPop(context)) Navigator.pop(context);
+
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -128,6 +155,8 @@ class _MainDrawerState extends State<MainDrawer> {
                   ),
                   InkWell(
                     onTap: () async {
+                      if (Navigator.canPop(context)) Navigator.pop(context);
+
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -147,6 +176,7 @@ class _MainDrawerState extends State<MainDrawer> {
                   ),
                   InkWell(
                     onTap: () async {
+                      if (Navigator.canPop(context)) Navigator.pop(context);
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -159,6 +189,26 @@ class _MainDrawerState extends State<MainDrawer> {
                         children: <Widget>[
                           Text(
                             AppLocalizations.of(context).inviteFriendText,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      if (Navigator.canPop(context)) Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SettingScreen()));
+                    },
+                    child: ListTile(
+                      leading: Icon(Icons.settings),
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          Text(
+                            AppLocalizations.of(context).settingsText,
                           ),
                         ],
                       ),

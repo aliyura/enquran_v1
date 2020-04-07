@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:enquran/screens/quran_juz_screen.dart';
 import 'package:enquran/screens/quran_sura_screen.dart';
+import 'package:enquran/app_themes.dart';
 
 class QuranListScreen extends StatefulWidget {
   final int currentTabIndex;
@@ -24,6 +25,7 @@ class _QuranListScreenState extends State<QuranListScreen>
 
   @override
   void initState() {
+     AppTheme.initilizeTheme();
     super.initState();
   }
 

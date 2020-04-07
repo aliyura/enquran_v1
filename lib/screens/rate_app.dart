@@ -10,6 +10,7 @@ class RateAppScreen extends StatefulWidget {
 class _RateAppScreenState extends State<RateAppScreen> {
   @override
   void initState() {
+     AppTheme.initilizeTheme();
     super.initState();
   }
 

@@ -7,6 +7,7 @@ import 'package:enquran/models/quran_data_model.dart';
 import 'package:enquran/screens/quran_aya_screen.dart';
 import 'package:enquran/services/quran_data_services.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:enquran/app_themes.dart';
 
 class QuranSuraScreen extends StatefulWidget {
   @override
@@ -21,6 +22,7 @@ class _QuranSuraScreenState extends State<QuranSuraScreen>
 
   @override
   void initState() {
+    AppTheme.initilizeTheme();
     super.initState();
 
     (() async {
@@ -42,22 +44,25 @@ class _QuranSuraScreenState extends State<QuranSuraScreen>
                 Widget child,
                 QuranScreenScopedModel model,
               ) {
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: model.isGettingChapters
-                      ? 5
-                      : (model.chaptersModel?.chapters?.length ?? 0),
-                  itemBuilder: (BuildContext context, int index) {
-                    if (model.isGettingChapters) {
-                      return chapterDataCellShimmer();
-                    }
-                    
-                    var chapter =
-                        model.chaptersModel?.chapters?.elementAt(index);
-                    return chapterDataCell(chapter);
-                  },
-                );
+                return Container(
+                    color: AppTheme.nearlyWhite,
+                    padding: EdgeInsets.only(top: 0),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: model.isGettingChapters
+                          ? 5
+                          : (model.chaptersModel?.chapters?.length ?? 0),
+                      itemBuilder: (BuildContext context, int index) {
+                        if (model.isGettingChapters) {
+                          return chapterDataCellShimmer();
+                        }
+
+                        var chapter =
+                            model.chaptersModel?.chapters?.elementAt(index);
+                        return chapterDataCell(chapter);
+                      },
+                    ));
               },
             ),
           ),
@@ -81,8 +86,20 @@ class _QuranSuraScreenState extends State<QuranSuraScreen>
         ));
       },
       child: Container(
-        padding: EdgeInsets.symmetric(
-          vertical: 7.5,
+        padding: EdgeInsets.only(bottom: 10, top: 10),
+        width: double.infinity,
+        margin: EdgeInsets.only(left: 10.0, bottom: 15, right: 10, top: 0),
+        decoration: BoxDecoration(
+          color: AppTheme.white,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(8.0),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 15.0,
+              offset: Offset(0.0, 5.0),
+            ),
+          ],
         ),
         child: Row(
           children: <Widget>[
@@ -99,28 +116,34 @@ class _QuranSuraScreenState extends State<QuranSuraScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  // Text(
-                  //   chapter.nameSimple,
-                  //   style: TextStyle(
-                  //     fontSize: 18,
-                  //   ),
-                  // ),
-                  Text(chapter.translatedName.name),
+                  AppTheme.language == "English" || AppTheme.language == "Both"
+                      ? Text(
+                          chapter.translatedName.name,
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        )
+                      : SizedBox(),
+                  AppTheme.language == "Arabic" || AppTheme.language == "Both"
+                      ? Text(chapter.nameSimple)
+                      : SizedBox(),
                 ],
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 20,
-              ),
-              child: Text(
-                chapter.nameArabic,
-                textDirection: TextDirection.rtl,
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-            ),
+            AppTheme.language == "Arabic" || AppTheme.language == "Both"
+                ? Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 20,
+                    ),
+                    child: Text(
+                      chapter.nameArabic,
+                      textDirection: TextDirection.rtl,
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  )
+                : SizedBox()
           ],
         ),
       ),
@@ -132,8 +155,19 @@ class _QuranSuraScreenState extends State<QuranSuraScreen>
       child: InkWell(
         onTap: () {},
         child: Container(
-          padding: EdgeInsets.symmetric(
-            vertical: 7.5,
+          width: double.infinity,
+          margin: EdgeInsets.only(left: 10.0, bottom: 15, right: 10),
+          decoration: BoxDecoration(
+            color: AppTheme.white,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8.0),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 15.0,
+                offset: Offset(0.0, 5.0),
+              ),
+            ],
           ),
           child: Row(
             children: <Widget>[
@@ -141,7 +175,7 @@ class _QuranSuraScreenState extends State<QuranSuraScreen>
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Container(
                   width: 18,
-                  height: 18,
+                  height: 5,
                   color: ColorsSettings.shimmerColor,
                 ),
               ),

@@ -11,7 +11,7 @@ description: Study Holy Quran in english language.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -36,6 +36,7 @@ dependencies:
   after_layout: ^1.0.7
   shared_preferences: ^0.4.3
   draggable_scrollbar: ^0.0.4
+  flutter_colorpicker: ^0.2.6
   path: ^1.6.2
   tuple: ^1.0.2
   event_bus: ^1.0.1
@@ -44,6 +45,7 @@ dependencies:
   flutter_slidable: ^0.4.9
   sticky_headers: ^0.1.7
   flutter_list_drag_and_drop: ^0.1.6
+  splashscreen: ^1.2.0
   dio: ^1.0.13
   encrypt: ^2.0.0
   path_provider: ^0.4.1

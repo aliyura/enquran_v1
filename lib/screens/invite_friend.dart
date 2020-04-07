@@ -10,6 +10,7 @@ class InviteFriend extends StatefulWidget {
 class _InviteFriendState extends State<InviteFriend> {
   @override
   void initState() {
+     AppTheme.initilizeTheme();
     super.initState();
   }
 

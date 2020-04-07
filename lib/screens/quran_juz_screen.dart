@@ -7,7 +7,7 @@ import 'package:enquran/models/juz_model.dart';
 import 'package:enquran/screens/quran_aya_screen.dart';
 import 'package:enquran/services/quran_data_services.dart';
 import 'package:scoped_model/scoped_model.dart';
-
+import 'package:enquran/app_themes.dart';
 
 class QuranJuzScreen extends StatefulWidget {
   @override
@@ -22,6 +22,8 @@ class _QuranJuzScreenState extends State<QuranJuzScreen> {
 
   @override
   void initState() {
+
+     AppTheme.initilizeTheme();
     (() async {
       await quranJuzScreenScopedModel.getJuzs();
       await quranJuzScreenScopedModel.getChapters();
@@ -86,71 +88,64 @@ class _QuranJuzScreenState extends State<QuranJuzScreen> {
       (v) => v.chapterNumber == firstSura && firstAya <= v.versesCount,
     );
 
-    // return InkWell(
-    //   onTap: () {
-    //     Navigator.of(context).push(
-    //       MaterialPageRoute(
-    //         builder: (BuildContext context) {
-    //           return QuranAyaScreen(
-    //             chapter: selectedChapter,
-    //           );
-    //         },
-    //       ),
-    //     );
-    //   },
-    //   child: Container(
-    //   padding: EdgeInsets.symmetric(
-    //     vertical: 7.5,
-    //   ),
-    //   child: Row(
-    //     children: <Widget>[
-    //       SizedBox(
-    //         width: 15,
-    //       ),
-    //       Expanded(
-    //         child:
-    //       ),
-    //
-    //     ],
-    //   ),
-    // ),
-    // );
-    return ListTile(
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) {
-              return QuranAyaScreen(
-                chapter: selectedChapter,
-              );
-            },
+   
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.only(left: 10.0, bottom: 15, right: 10),
+      decoration: BoxDecoration(
+        color: AppTheme.white,
+        shape: BoxShape.rectangle,
+        borderRadius: BorderRadius.circular(8.0),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 15.0,
+            offset: Offset(0.0, 5.0),
           ),
-        );
-      },
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Text(
-            '${AppLocalizations.of(context).juzText} ${juz.juzNumber}',
-            style: TextStyle(
-              fontSize: 18,
-            ),
-          ),
-          Text('${selectedChapter?.nameSimple} $firstSura:$firstAya'),
         ],
       ),
-      trailing: Container(
-        width: 175,
-        child: Text(
-          juz.aya ?? '',
-          textDirection: TextDirection.rtl,
-          textAlign: TextAlign.right,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontSize: 20,
-          ),
+      child: ListTile(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return QuranAyaScreen(
+                  chapter: selectedChapter,
+                );
+              },
+            ),
+          );
+        },
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+             AppTheme.language == "English" || AppTheme.language == "Both"?
+            Text(
+              '${AppLocalizations.of(context).juzText} ${juz.juzNumber}',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ):SizedBox(),
+
+             AppTheme.language == "Arabic" || AppTheme.language == "Both"?
+            Text('${selectedChapter?.nameSimple} $firstSura:$firstAya'):SizedBox(),
+          ],
         ),
+        trailing:
+         AppTheme.language == "Arabic" || AppTheme.language == "Both"?
+         Container(
+          width: 175,
+          child: Text(
+            juz.aya ?? '',
+            textDirection: TextDirection.rtl,
+            textAlign: TextAlign.right,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 20,
+            ),
+          ),
+        ):SizedBox(),
       ),
     );
   }
@@ -160,13 +155,24 @@ class _QuranJuzScreenState extends State<QuranJuzScreen> {
       child: InkWell(
         onTap: () {},
         child: Container(
-          padding: EdgeInsets.symmetric(
-            vertical: 7.5,
+          width: double.infinity,
+          margin: EdgeInsets.only(left: 10.0, bottom: 15, right: 10),
+          decoration: BoxDecoration(
+            color: AppTheme.white,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8.0),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 15.0,
+                offset: Offset(0.0, 5.0),
+              ),
+            ],
           ),
           child: Row(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Container(
                   width: 18,
                   height: 18,

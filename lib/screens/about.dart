@@ -10,6 +10,7 @@ class AboutScreen extends StatefulWidget {
 class _AboutScreenState extends State<AboutScreen> {
   @override
   void initState() {
+     AppTheme.initilizeTheme();
     super.initState();
   }
 

@@ -13,6 +13,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
   @override
   void initState() {
+     AppTheme.initilizeTheme();
     super.initState();
   }
 
