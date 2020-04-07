@@ -21,6 +21,7 @@ import 'package:after_layout/after_layout.dart';
 import 'package:quiver/strings.dart';
 import 'package:share/share.dart';
 import 'package:tuple/tuple.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class QuranAyaScreen extends StatefulWidget {
   final Chapter chapter;
@@ -384,6 +385,7 @@ class AyaItemCellState extends State<AyaItemCell> {
   Aya aya = Aya();
   List<Tuple2<TranslationDataKey, TranslationAya>> listTranslationsAya = [];
   QuranAyaScreenScopedModel model;
+  FlutterTts flutterTts; 
 
   MyEventBus _myEventBus = MyEventBus.instance;
 
@@ -414,6 +416,7 @@ class AyaItemCellState extends State<AyaItemCell> {
       }
     });
 
+    inializeSpeaker();
     super.initState();
   }
 
@@ -422,6 +425,18 @@ class AyaItemCellState extends State<AyaItemCell> {
     streamEvent?.cancel();
     streamEvent = null;
     super.dispose();
+  }
+
+void inializeSpeaker() async{
+    flutterTts = FlutterTts();
+    await flutterTts.setLanguage("hi-IN");
+    await flutterTts.setSpeechRate(0.4);
+    await flutterTts.setVolume(1);
+    await flutterTts.setPitch(1.1);
+}
+  void _playVerse(String verse) async {
+    var result = await flutterTts.speak(verse);
+    print(result);
   }
 
   @override
@@ -625,8 +640,8 @@ class AyaItemCellState extends State<AyaItemCell> {
                     children: <Widget>[
                       Icon(
                         !aya.isBookmarked
-                            ? Icons.bookmark
-                            : MdiIcons.bookmarkRemove,
+                            ? Icons.bookmark_border
+                            : MdiIcons.bookmarkOffOutline,
                         color: AppTheme.background,
                       ),
                       SizedBox(width: 10),
@@ -634,7 +649,28 @@ class AyaItemCellState extends State<AyaItemCell> {
                     ],
                   )),
               Divider(height: 10),
-              FlatButton(
+             
+              translation != null ? Divider() : SizedBox(),
+              translation != null
+                  ? FlatButton(
+                      onPressed: () async {
+                        translation=translation?.replaceAll('Allah', 'God');
+                        _playVerse(translation);
+                        Navigator.of(context).pop();
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.play_circle_outline,
+                            color: AppTheme.background,
+                          ),
+                          SizedBox(width: 10),
+                          Text("Listen the Verse")
+                        ],
+                      ))
+                  : SizedBox(),
+              Divider(),
+               FlatButton(
                   onPressed: () async {
                     String body = translation == null
                         ? "\"" +
@@ -658,7 +694,7 @@ class AyaItemCellState extends State<AyaItemCell> {
                       Text("Share this Verse")
                     ],
                   )),
-              Divider(),
+                  Divider(height: 10),
               FlatButton(
                   onPressed: () async {
                     Navigator.of(context).pop();
@@ -674,13 +710,13 @@ class AyaItemCellState extends State<AyaItemCell> {
                     ],
                   )),
             ],
-            
           ),
         );
       },
     );
   }
 }
+
 
 class QuranAyaScreenScopedModel extends Model {
   QuranDataService _quranDataService = QuranDataService.instance;
