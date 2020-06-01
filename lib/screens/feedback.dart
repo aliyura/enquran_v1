@@ -166,7 +166,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   }
 
   _launchURL(body) async {
-    String url="mailto:net.rabiualiyu@gmail.com?subject=User feedback from en Quran app v0.0.1&body="+body;
+    String url="mailto:e.rabiualiyu@gmail.com?subject=User feedback from en Quran app v0.0.1&body="+body;
     if (await canLaunch(url)) {
       await launch(url);
     } else {

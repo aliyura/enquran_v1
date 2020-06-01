@@ -79,7 +79,7 @@ class _AboutScreenState extends State<AboutScreen> {
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () {
-                                 _launchURL("https://play.google.com/store/apps/details?id=com.rabsdeveloper.enquran");
+                                 _launchURL("https://play.google.com/store/apps/details?id=com.aliyura.enquran");
                      
                             },
                             child: Center(

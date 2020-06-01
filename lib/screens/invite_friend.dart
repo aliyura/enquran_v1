@@ -80,7 +80,7 @@ class _InviteFriendState extends State<InviteFriend> {
                           child: InkWell(
                             onTap: () {
                               Share.share(
-                                  "Hi There!\n\nDownload enQuran app  v1.0.0\n\nStart your Quran study in English language.\n\nThe Quran is believed to be a continuation of the Old Testament and the New Testament of the Holy Bible. The Quran is the Islamic sacred book, believed to be the word of God as dictated to Prophet Muhammad by the angel Gabriel and written down in Arabic. The Quran consists of 114 units of varying lengths, known as suras; the first sura is said as part of the ritual prayer. These touch upon all aspects of human existence, including matters of doctrine, social organization, and legislation.\n\nhttps://play.google.com/store/apps/details?id=com.rabsdeveloper.enquran");
+                                  "Hi There!\n\nDownload enQuran app  v1.0.0\n\nStart your Quran study in English language.\n\nThe Quran is believed to be a continuation of the Old Testament and the New Testament of the Holy Bible. The Quran is the Islamic sacred book, believed to be the word of God as dictated to Prophet Muhammad by the angel Gabriel and written down in Arabic. The Quran consists of 114 units of varying lengths, known as suras; the first sura is said as part of the ritual prayer. These touch upon all aspects of human existence, including matters of doctrine, social organization, and legislation.\n\nhttps://play.google.com/store/apps/details?id=com.aliyura.enquran");
                             },
                             child: Center(
                               child: Row(

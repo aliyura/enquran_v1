@@ -447,7 +447,7 @@ class AyaItemCellState extends State<AyaItemCell> {
             translation +
             "\"\n\nHoly Quran [${chapter.nameSimple} ${chapter.chapterNumber}:${aya.aya}]";
     Share.share(body +
-        "\n\nQuoted from en Quran v1.0.0, download yours via https://play.google.com/store/apps/details?id=com.rabsdeveloper.enquran");
+        "\n\nQuoted from en Quran v1.0.0, download yours via https://play.google.com/store/apps/details?id=com.aliyura.enquran");
   }
 
   void _playVerse(String verse) async {
